@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <canvas id="grafico" width="600" height="400"></canvas>
   <title>Seleccionar opciones</title>
 </head>
 <body>
@@ -26,6 +27,7 @@
 
   <button id="botonParaGenerar" onclick="procesarSelecciones()">Generar</button>
   <script>
+    let chartInstance;
     let dataJson;
     // Cargar el JSON usando fetch
     fetch("data.json")
@@ -83,18 +85,14 @@
     function procesarSelecciones() {
       const numero = parseInt(document.getElementById('numeroOpciones').value);
       const categoria = document.getElementById('categoria').value;
-
       if (!dataJson) {
         alert("Los datos aún no se han cargado. Intenta nuevamente en unos segundos.");
         return;
       }
-
       let resultado = `Categoría seleccionada: ${categoria}\n\nRegiones seleccionadas:\n`;
-
       for (let i = 1; i <= numero; i++) {
         const select = document.querySelector(`#opciones-${i} select`);
         const regionSeleccionada = select.value;
-
         const regionData = dataJson.find(r => r.region === regionSeleccionada);
         if (regionData && regionData[categoria]?.length > 0) {
           const datos = regionData[categoria];
@@ -107,9 +105,6 @@
 
       alert(resultado);
     }
-
-
   </script>
-
 </body>
 </html>
