@@ -42,4 +42,31 @@
     outline: none;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
+  .opciones {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+  }
   
+  /* Estilo del label de cada select */
+  .opciones label {
+    font-size: 16px;
+    color: #000000;
+    min-width: 250px;
+  }
+  
+  /* Estilo del select desplegable */
+  .opciones select {
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: white;
+    color: #000000;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+
