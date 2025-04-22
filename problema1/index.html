@@ -49,16 +49,12 @@
       const numero = parseInt(document.getElementById('numeroOpciones').value);
       container.innerHTML = ''; // Limpiar contenido previo
 
-      for (let i = 1; i <= numero; i++) {
-        const boton = document.createElement('button');
-        boton.textContent = 'Opción ' + i;
-        boton.onclick = () => mostrarOpciones(i);
-        container.appendChild(boton);
-        if (isNaN(numero) || numero < 1 || numero > 25) {
-            alert("Por favor ingresa un número válido entre 1 y 25.");
-            return;
-        }
+      if (isNaN(numero) || numero < 1 || numero > 25) {
+        alert("Por favor ingresa un número válido entre 1 y 25.");
+        return;
+      }
 
+      for (let i = 1; i <= numero; i++) {
         const divOpciones = document.createElement('div');
         divOpciones.id = 'opciones-' + i;
         divOpciones.className = 'opciones';
@@ -78,13 +74,10 @@
         divOpciones.appendChild(select);
         container.appendChild(divOpciones);
       }
+
       document.getElementById('categoria-container').style.display = 'block';
     }
-    function mostrarOpciones(indice) {
-      // Oculta todas las opciones antes de mostrar una
-      document.querySelectorAll('.opciones').forEach(div => div.style.display = 'none');
-      document.getElementById('opciones-' + indice).style.display = 'block';
-    }
+
     function procesarSelecciones() {
       const numero = parseInt(document.getElementById('numeroOpciones').value);
       const categoria = document.getElementById('categoria').value;
