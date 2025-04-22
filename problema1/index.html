@@ -29,6 +29,11 @@
         container.appendChild(divOpciones);
       }
     }
+    function mostrarOpciones(indice) {
+      // Oculta todas las opciones antes de mostrar una
+      document.querySelectorAll('.opciones').forEach(div => div.style.display = 'none');
+      document.getElementById('opciones-' + indice).style.display = 'block';
+    }
 
   </script>
 
