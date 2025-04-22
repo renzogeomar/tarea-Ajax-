@@ -26,6 +26,12 @@
 
   <button id="botonParaGenerar" onclick="procesarSelecciones()">Generar</button>
   <script>
+    let dataJson;
+    // Cargar el JSON usando fetch
+    fetch("data.json")
+      .then(res => res.json())
+      .then(data => dataJson = data)
+      .catch(err => console.error("Error cargando JSON:", err));
     const regiones = [
       'Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho',
       'Cajamarca', 'Callao', 'Cusco', 'Huancavelica', 'Huanuco',
@@ -77,15 +83,31 @@
     function procesarSelecciones() {
       const numero = parseInt(document.getElementById('numeroOpciones').value);
       const categoria = document.getElementById('categoria').value;
+
+      if (!dataJson) {
+        alert("Los datos aún no se han cargado. Intenta nuevamente en unos segundos.");
+        return;
+      }
+
       let resultado = `Categoría seleccionada: ${categoria}\n\nRegiones seleccionadas:\n`;
 
       for (let i = 1; i <= numero; i++) {
         const select = document.querySelector(`#opciones-${i} select`);
-        resultado += `Opción ${i}: ${select.value}\n`;
+        const regionSeleccionada = select.value;
+
+        const regionData = dataJson.find(r => r.region === regionSeleccionada);
+        if (regionData && regionData[categoria]?.length > 0) {
+          const datos = regionData[categoria];
+          const ultimo = datos[datos.length - 1].value;
+          resultado += `Opción ${i}: ${regionSeleccionada} → ${ultimo}\n`;
+        } else {
+          resultado += `Opción ${i}: ${regionSeleccionada} → Sin datos disponibles\n`;
+        }
       }
 
       alert(resultado);
     }
+
 
   </script>
 
