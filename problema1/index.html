@@ -5,12 +5,19 @@
   <title>Seleccionar opciones</title>
 </head>
 <body>
-  <h2>Selecciona un número de opciones</h2>
-  <input type="number" id="numeroOpciones" min="1" max="10" />
+  <h2>Selecciona un número de regiones</h2>
+  <input type="number" id="numeroOpciones" min="1" max="25" />
   <button onclick="generarBotones()">Generar</button>
 
   <div id="botones-container"></div>
   <script>
+    const regiones = [
+      'Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho',
+      'Cajamarca', 'Callao', 'Cusco', 'Huancavelica', 'Huanuco',
+      'Ica', 'Junin', 'La Libertad', 'Lambayeque', 'Lima',
+      'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura',
+      'Puno', 'San Martin', 'Tacna', 'Tumbes', 'Ucayali'
+    ];
     function generarBotones() {
       const container = document.getElementById('botones-container');
       const numero = parseInt(document.getElementById('numeroOpciones').value);
@@ -25,7 +32,20 @@
         const divOpciones = document.createElement('div');
         divOpciones.id = 'opciones-' + i;
         divOpciones.className = 'opciones';
-        divOpciones.textContent = `Por ahora no mostrare las opciones de las regiones ${i}`;
+
+        const label = document.createElement('label');
+        label.textContent = `Selecciona una región para la opción ${i}: `;
+
+        const select = document.createElement('select');
+        regiones.forEach(region => {
+          const option = document.createElement('option');
+          option.value = region;
+          option.textContent = region;
+          select.appendChild(option);
+        });
+
+        divOpciones.appendChild(label);
+        divOpciones.appendChild(select);
         container.appendChild(divOpciones);
       }
     }
