@@ -74,6 +74,18 @@
       document.querySelectorAll('.opciones').forEach(div => div.style.display = 'none');
       document.getElementById('opciones-' + indice).style.display = 'block';
     }
+    function procesarSelecciones() {
+      const numero = parseInt(document.getElementById('numeroOpciones').value);
+      const categoria = document.getElementById('categoria').value;
+      let resultado = `Categoría seleccionada: ${categoria}\n\nRegiones seleccionadas:\n`;
+
+      for (let i = 1; i <= numero; i++) {
+        const select = document.querySelector(`#opciones-${i} select`);
+        resultado += `Opción ${i}: ${select.value}\n`;
+      }
+
+      alert(resultado);
+    }
 
   </script>
 
