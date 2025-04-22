@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <title>Seleccionar opciones</title>
 </head>
 <body>
@@ -10,6 +11,19 @@
   <button onclick="generarBotones()">Generar</button>
 
   <div id="botones-container"></div>
+
+  <div id="categoria-container">
+    <h3>Selecciona una categoría de datos</h3>
+    <select id="categoria">
+      <option value="confirmados">Casos confirmados</option>
+      <option value="recuperados">Recuperados</option>
+      <option value="muertes">Muertes</option>
+      <option value="hospitalizados">Hospitalizados</option>
+      <option value="uci">Hospitalizados UCI</option>
+      <option value="no_hospitalizados">No hospitalizados</option>
+    </select>
+  </div>
+
   <button id="botonParaGenerar" onclick="procesarSelecciones()">Generar</button>
   <script>
     const regiones = [
@@ -29,6 +43,10 @@
         boton.textContent = 'Opción ' + i;
         boton.onclick = () => mostrarOpciones(i);
         container.appendChild(boton);
+        if (isNaN(numero) || numero < 1 || numero > 25) {
+            alert("Por favor ingresa un número válido entre 1 y 25.");
+            return;
+        }
 
         const divOpciones = document.createElement('div');
         divOpciones.id = 'opciones-' + i;
@@ -49,6 +67,7 @@
         divOpciones.appendChild(select);
         container.appendChild(divOpciones);
       }
+      document.getElementById('categoria-container').style.display = 'block';
     }
     function mostrarOpciones(indice) {
       // Oculta todas las opciones antes de mostrar una
