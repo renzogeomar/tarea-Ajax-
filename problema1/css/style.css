@@ -68,5 +68,29 @@
     cursor: pointer;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
+  .opciones select:focus {
+    border-color: #36A2EB; /* Borde azul */
+    box-shadow: 0 0 5px rgba(54, 162, 235, 0.6); /* Sombra azul */
+    outline: none; /* Sin contorno adicional */
+  }
+
+  #categoria {
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #000000;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    width: 250px; /* Puedes ajustar el ancho si lo deseas */
+    margin-top: 10px;
+  }
   
+  /* Estilo al enfocar */
+  #categoria:focus {
+    border-color: #36A2EB;
+    box-shadow: 0 0 5px rgba(54, 162, 235, 0.6);
+    outline: none;
+  }
 
