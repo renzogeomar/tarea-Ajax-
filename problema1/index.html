@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <canvas id="grafico" width="600" height="400"></canvas>
   <title>Seleccionar opciones</title>
 </head>
 <body>
@@ -26,6 +25,7 @@
   </div>
 
   <button id="botonParaGenerar" onclick="procesarSelecciones()">Generar</button>
+  <canvas id="grafico" width="600" height="400"></canvas>
   <script>
     let chartInstance;
     let dataJson;
@@ -85,25 +85,43 @@
     function procesarSelecciones() {
       const numero = parseInt(document.getElementById('numeroOpciones').value);
       const categoria = document.getElementById('categoria').value;
+
       if (!dataJson) {
         alert("Los datos aún no se han cargado. Intenta nuevamente en unos segundos.");
         return;
       }
+
       let resultado = `Categoría seleccionada: ${categoria}\n\nRegiones seleccionadas:\n`;
+      const etiquetas = [];
+      const valores = [];
+
       for (let i = 1; i <= numero; i++) {
         const select = document.querySelector(`#opciones-${i} select`);
         const regionSeleccionada = select.value;
+
         const regionData = dataJson.find(r => r.region === regionSeleccionada);
         if (regionData && regionData[categoria]?.length > 0) {
           const datos = regionData[categoria];
-          const ultimo = datos[datos.length - 1].value;
+          const ultimo = parseInt(datos[datos.length - 1].value);
+          etiquetas.push(regionSeleccionada);
+          valores.push(ultimo);
           resultado += `Opción ${i}: ${regionSeleccionada} → ${ultimo}\n`;
         } else {
+          etiquetas.push(regionSeleccionada);
+          valores.push(0);
           resultado += `Opción ${i}: ${regionSeleccionada} → Sin datos disponibles\n`;
         }
       }
 
       alert(resultado);
+
+      // Destruir gráfico anterior si existe
+      if (chartInstance) {
+        chartInstance.destroy();
+      }
+
+      const ctx = document.getElementById("grafico").getContext("2d");
+      
     }
   </script>
 </body>
