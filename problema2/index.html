@@ -66,8 +66,8 @@
           boton.style.backgroundColor = '#80c9ff'; // Azul claro
         }
       }
-  
       function procesarSelecciones() {
+        //Verificaciones para ver si los datos estan cargados y asegura que al menos se halla seleccionado una opcion  
         const categoria = document.getElementById('categoria').value;
 
         if (!dataJson) {
@@ -81,7 +81,7 @@
         }
 
         // Obtener todas las fechas únicas desde la primera región con datos
-        const fechas = [];
+        const fechas = []; 
         for (const regionData of dataJson) {
           if (regionData[categoria]?.length > 0) {
             regionData[categoria].forEach(item => {
@@ -156,7 +156,12 @@
           }
         });
       }
-
+      function getRandomColor() {
+        const r = Math.floor(Math.random() * 200);
+        const g = Math.floor(Math.random() * 200);
+        const b = Math.floor(Math.random() * 200);
+        return `rgb(${r}, ${g}, ${b})`;
+      }
     </script>
   </body>
 </html>
