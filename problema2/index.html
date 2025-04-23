@@ -114,12 +114,13 @@
             tension: 0.2
           };
         });
-
+        //Destruye el grafico anterior
         if (chartInstance) {
           chartInstance.destroy();
         }
-
+        //Crea un grafico de lineas, muestra una linea por region seleccionada y el eje X muestra las fechas, y el eje Y la cantidad de casos.
         const ctx = document.getElementById("grafico").getContext("2d");
+        
         chartInstance = new Chart(ctx, {
           type: "line",
           data: {
@@ -156,6 +157,7 @@
           }
         });
       }
+      //genera un color aleatorio
       function getRandomColor() {
         const r = Math.floor(Math.random() * 200);
         const g = Math.floor(Math.random() * 200);

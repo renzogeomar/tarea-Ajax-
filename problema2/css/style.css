@@ -1,0 +1,103 @@
+
+body {
+    background-image: url('fondo.jpg');
+    background-size: cover;       
+    background-position: center; 
+    background-repeat: no-repeat;  
+  }
+#principal {
+    width: 90%;
+    max-width: 600px;
+    margin: 50px auto; /* Centra horizontalmente todo el div */
+    padding: 20px;
+    text-align: center; /* Centra el contenido del texto */
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+  }
+  button {
+    padding: 8px 20px;
+    margin-top: 20px;
+    background-color: #36A2EB;  
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;  /* Transición suave para hover */
+  }
+  button:hover {
+    background-color: #2980b9;  
+    transform: scale(1.05);  
+  }
+  button:active {
+    background-color: #1f6e9d;  
+    transform: scale(0.98);  
+  }
+  button:focus {
+    outline: none;  
+  }
+  input[type="number"] {
+    padding: 8px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 80px;
+    margin-top: 10px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .opciones {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+  }
+  
+  /* Estilo del label de cada select */
+  .opciones label {
+    font-size: 16px;
+    color: #000000;
+    min-width: 250px;
+  }
+  
+  /* Estilo del select desplegable */
+  .opciones select {
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: white;
+    color: #000000;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .opciones select:focus {
+    border-color: #36A2EB; /* Borde azul */
+    box-shadow: 0 0 5px rgba(54, 162, 235, 0.6); /* Sombra azul */
+    outline: none; /* Sin contorno adicional */
+  }
+
+  #categoria {
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #000000;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    width: 250px; /* Puedes ajustar el ancho si lo deseas */
+    margin-top: 10px;
+  }
+  
+  /* Estilo al enfocar */
+  #categoria:focus {
+    border-color: #36A2EB;
+    box-shadow: 0 0 5px rgba(54, 162, 235, 0.6);
+    outline: none;
+  }
+
