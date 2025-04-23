@@ -119,6 +119,42 @@
           chartInstance.destroy();
         }
 
+        const ctx = document.getElementById("grafico").getContext("2d");
+        chartInstance = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: fechas,
+            datasets: datasets
+          },
+          options: {
+            responsive: true,
+            interaction: {
+              mode: 'index',
+              intersect: false
+            },
+            stacked: false,
+            plugins: {
+              title: {
+                display: true,
+                text: `Evolución diaria de ${categoria}`
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: 'Casos'
+                }
+              },
+              x: {
+                ticks: {
+                  maxTicksLimit: 15 
+                }
+              }
+            }
+          }
+        });
       }
 
     </script>
