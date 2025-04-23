@@ -97,6 +97,28 @@
           const regionData = dataJson.find(r => r.region === regionSeleccionada);
           const datos = regionData?.[categoria] || [];
 
+          // Crear un mapa de valores por fecha
+          const mapaValores = {};
+          datos.forEach(item => {
+            mapaValores[item.date] = parseInt(item.value);
+          });
+
+          // Generar la serie alineada con todas las fechas
+          const serie = fechas.map(fecha => mapaValores[fecha] || 0);
+
+          return {
+            label: regionSeleccionada,
+            data: serie,
+            fill: false,
+            borderColor: getRandomColor(),
+            tension: 0.2
+          };
+        });
+
+        if (chartInstance) {
+          chartInstance.destroy();
+        }
+
       }
 
     </script>
