@@ -69,63 +69,36 @@
   
       function procesarSelecciones() {
         const categoria = document.getElementById('categoria').value;
-  
+
         if (!dataJson) {
           alert("Los datos aún no se han cargado.");
           return;
         }
-  
+
         if (regionesSeleccionadas.length === 0) {
           alert("Selecciona al menos una región.");
           return;
         }
-  
-        const etiquetas = [];
-        const valores = [];
-  
-        regionesSeleccionadas.forEach(regionSeleccionada => {
-          const regionData = dataJson.find(r => r.region === regionSeleccionada);
-          if (regionData && regionData[categoria]?.length > 0) {
-            const datos = regionData[categoria];
-            const ultimo = parseInt(datos[datos.length - 1].value);
-            etiquetas.push(regionSeleccionada);
-            valores.push(ultimo);
-          } else {
-            etiquetas.push(regionSeleccionada);
-            valores.push(0);
-          }
-        });
-  
-        if (chartInstance) {
-          chartInstance.destroy();
-        }
-  
-        const ctx = document.getElementById("grafico").getContext("2d");
-        chartInstance = new Chart(ctx, {
-          type: "bar",
-          data: {
-            labels: etiquetas,
-            datasets: [{
-              label: `Últimos valores de ${categoria}`,
-              data: valores,
-              backgroundColor: 'rgba(54, 162, 235, 0.6)',
-              borderColor: 'rgba(54, 162, 235, 1)',
-              borderWidth: 1
-            }]
-          },
-          options: {
-            scales: {
-              y: {
-                beginAtZero: true,
-                title: {
-                  display: true,
-                  text: 'Casos'
-                }
+
+        // Obtener todas las fechas únicas desde la primera región con datos
+        const fechas = [];
+        for (const regionData of dataJson) {
+          if (regionData[categoria]?.length > 0) {
+            regionData[categoria].forEach(item => {
+              if (!fechas.includes(item.date)) {
+                fechas.push(item.date);
               }
-            }
+            });
+            break; // solo necesitamos las fechas base
           }
-        });
+        }
+
+        const datasets = regionesSeleccionadas.map(regionSeleccionada => {
+          const regionData = dataJson.find(r => r.region === regionSeleccionada);
+          const datos = regionData?.[categoria] || [];
+
       }
+
     </script>
   </body>
 </html>
