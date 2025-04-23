@@ -8,9 +8,8 @@
 </head>
 <body>
     <div id="principal">
-      <h2>Selecciona regiones (haz clic en cada una):</h2>
+      <h2>Selecciona las regiones que quieras ver:</h2>
       <div id="botones-container"></div>
-  
       <div id="categoria-container">
         <h3>Selecciona una categoría de datos</h3>
         <select id="categoria">
@@ -24,28 +23,23 @@
       </div>  
       <button id="botonParaGenerar" onclick="procesarSelecciones()">Generar gráfico</button>
     </div>
-  
     <canvas id="grafico" width="600" height="300"></canvas>
-  
     <script>
       let chartInstance;
       let dataJson;
       let regionesSeleccionadas = [];
-  
       // Cargar datos
       fetch("data.json")
         .then(res => res.json())
         .then(data => dataJson = data)
         .catch(err => console.error("Error cargando JSON:", err));
-  
       const regiones = [
         'Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho',
-        'Cajamarca', 'Callao', 'Cusco', 'Huancavelica', 'Huanuco',
-        'Ica', 'Junin', 'La Libertad', 'Lambayeque', 'Lima',
+        'Cajamarca', 'Cusco', 'Huancavelica', 'Huanuco',
+        'Ica', 'Junin', 'La Libertad', 'Lambayeque', 
         'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura',
         'Puno', 'San Martin', 'Tacna', 'Tumbes', 'Ucayali'
       ];
-  
       // Crear botones de regiones
       const container = document.getElementById('botones-container');
       regiones.forEach(region => {
@@ -55,7 +49,6 @@
         boton.style.margin = '4px';
         container.appendChild(boton);
       });
-  
       function toggleRegion(region, boton) {
         if (regionesSeleccionadas.includes(region)) {
           // Deseleccionar
@@ -79,7 +72,6 @@
           alert("Selecciona al menos una región.");
           return;
         }
-
         // Obtener todas las fechas únicas desde la primera región con datos
         const fechas = []; 
         for (const regionData of dataJson) {
@@ -92,7 +84,6 @@
             break; // solo necesitamos las fechas base
           }
         }
-
         const datasets = regionesSeleccionadas.map(regionSeleccionada => {
           const regionData = dataJson.find(r => r.region === regionSeleccionada);
           const datos = regionData?.[categoria] || [];
