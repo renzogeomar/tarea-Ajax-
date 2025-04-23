@@ -28,11 +28,11 @@ body {
     transition: background-color 0.3s ease, transform 0.3s ease;  /* Transición suave para hover */
   }
   button:hover {
-    background-color: #2980b9;  /* Cambiar color de fondo cuando el ratón pasa por encima */
+    background-color: #2980b9;  
     transform: scale(1.05);  
   }
   button:active {
-    background-color: #1f6e9d;  /* Color más oscuro al hacer clic */
+    background-color: #1f6e9d;  
     transform: scale(0.98);  
   }
   button:focus {

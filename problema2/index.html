@@ -8,10 +8,7 @@
 </head>
 <body>
   <div id="principal">
-    <h2>Selecciona un número de regiones</h2>
-    <input type="number" id="numeroOpciones" min="1" max="25" />
-    <button onclick="generarBotones()">Generar</button>
-
+    <h2>Selecciona regiones (haz clic en cada una):</h2>
     <div id="botones-container"></div>
 
     <div id="categoria-container">
@@ -25,17 +22,22 @@
         <option value="nohospital">No hospitalizados</option>
       </select>
     </div>  
-    <button id="botonParaGenerar" onclick="procesarSelecciones()">Generar</button>
+    <button id="botonParaGenerar" onclick="procesarSelecciones()">Generar gráfico</button>
   </div>
-  <canvas id="grafico" width="300" height="100"></canvas>
+
+  <canvas id="grafico" width="600" height="300"></canvas>
+
   <script>
     let chartInstance;
     let dataJson;
-    // Cargar el JSON usando fetch
+    let regionesSeleccionadas = [];
+
+    // Cargar datos
     fetch("data.json")
       .then(res => res.json())
       .then(data => dataJson = data)
       .catch(err => console.error("Error cargando JSON:", err));
+
     const regiones = [
       'Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho',
       'Cajamarca', 'Callao', 'Cusco', 'Huancavelica', 'Huanuco',
@@ -43,65 +45,61 @@
       'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura',
       'Puno', 'San Martin', 'Tacna', 'Tumbes', 'Ucayali'
     ];
-    function generarBotones() {
-      const container = document.getElementById('botones-container');
-      const numero = parseInt(document.getElementById('numeroOpciones').value);
-      container.innerHTML = ''; // Limpiar contenido previo
 
-      if (isNaN(numero) || numero < 1 || numero > 25) {
-        alert("Por favor ingresa un número válido entre 1 y 25.");
-        return;
+    // Crear los botones de regiones
+    const container = document.getElementById('botones-container');
+    regiones.forEach(region => {
+      const boton = document.createElement('button');
+      boton.textContent = region;
+      boton.onclick = () => toggleRegion(region, boton);
+      boton.style.margin = '4px';
+      container.appendChild(boton);
+    });
+
+    function toggleRegion(region, boton) {
+      if (regionesSeleccionadas.includes(region)) {
+        // Deseleccionar
+        regionesSeleccionadas = regionesSeleccionadas.filter(r => r !== region);
+        boton.style.backgroundColor = '';
+      } else {
+        regionesSeleccionadas.push(region);
+        boton.style.backgroundColor = '#80c9ff'; // Azul claro
       }
-      for (let i = 1; i <= numero; i++) {
-        const divOpciones = document.createElement('div');
-        divOpciones.id = 'opciones-' + i;
-        divOpciones.className = 'opciones';
-        const label = document.createElement('label');
-        label.textContent = `Selecciona una región para la opción ${i}: `;
-        const select = document.createElement('select');
-        regiones.forEach(region => {
-          const option = document.createElement('option');
-          option.value = region;
-          option.textContent = region;
-          select.appendChild(option);
-        });
-        divOpciones.appendChild(label);
-        divOpciones.appendChild(select);
-        container.appendChild(divOpciones);
-      }
-      document.getElementById('categoria-container').style.display = 'block';
     }
+
     function procesarSelecciones() {
-      const numero = parseInt(document.getElementById('numeroOpciones').value);
       const categoria = document.getElementById('categoria').value;
+
       if (!dataJson) {
-        alert("Los datos aún no se han cargado. Intenta nuevamente en unos segundos.");
+        alert("Los datos aún no se han cargado.");
         return;
       }
-      let resultado = `Categoría seleccionada: ${categoria}\n\nRegiones seleccionadas:\n`;
+
+      if (regionesSeleccionadas.length === 0) {
+        alert("Selecciona al menos una región.");
+        return;
+      }
+
       const etiquetas = [];
       const valores = [];
-      for (let i = 1; i <= numero; i++) {
-        const select = document.querySelector(`#opciones-${i} select`);
-        const regionSeleccionada = select.value;
+
+      regionesSeleccionadas.forEach(regionSeleccionada => {
         const regionData = dataJson.find(r => r.region === regionSeleccionada);
         if (regionData && regionData[categoria]?.length > 0) {
           const datos = regionData[categoria];
           const ultimo = parseInt(datos[datos.length - 1].value);
           etiquetas.push(regionSeleccionada);
           valores.push(ultimo);
-          resultado += `Opción ${i}: ${regionSeleccionada} → ${ultimo}\n`;
         } else {
           etiquetas.push(regionSeleccionada);
           valores.push(0);
-          resultado += `Opción ${i}: ${regionSeleccionada} → Sin datos disponibles\n`;
         }
-      }
-      //alert(resultado);
-      // Destruir gráfico anterior si existe
+      });
+
       if (chartInstance) {
         chartInstance.destroy();
       }
+
       const ctx = document.getElementById("grafico").getContext("2d");
       chartInstance = new Chart(ctx, {
         type: "bar",
