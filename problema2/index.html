@@ -7,125 +7,67 @@
   <title>Grafico de casos COVID</title>
 </head>
 <body>
-  <div id="principal">
-    <h2>Selecciona regiones (haz clic en cada una):</h2>
-    <div id="botones-container"></div>
-
-    <div id="categoria-container">
-      <h3>Selecciona una categoría de datos</h3>
-      <select id="categoria">
-        <option value="confirmed">Casos confirmados</option>
-        <option value="recover">Recuperados</option>
-        <option value="death">Muertes</option>
-        <option value="hospital">Hospitalizados</option>
-        <option value="hospitaluci">Hospitalizados UCI</option>
-        <option value="nohospital">No hospitalizados</option>
-      </select>
-    </div>  
-    <button id="botonParaGenerar" onclick="procesarSelecciones()">Generar gráfico</button>
-  </div>
-
-  <canvas id="grafico" width="600" height="300"></canvas>
-
-  <script>
-    let chartInstance;
-    let dataJson;
-    let regionesSeleccionadas = [];
-
-    // Cargar datos
-    fetch("data.json")
-      .then(res => res.json())
-      .then(data => dataJson = data)
-      .catch(err => console.error("Error cargando JSON:", err));
-
-    const regiones = [
-      'Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho',
-      'Cajamarca', 'Callao', 'Cusco', 'Huancavelica', 'Huanuco',
-      'Ica', 'Junin', 'La Libertad', 'Lambayeque', 'Lima',
-      'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura',
-      'Puno', 'San Martin', 'Tacna', 'Tumbes', 'Ucayali'
-    ];
-
-    // Crear los botones de regiones
-    const container = document.getElementById('botones-container');
-    regiones.forEach(region => {
-      const boton = document.createElement('button');
-      boton.textContent = region;
-      boton.onclick = () => toggleRegion(region, boton);
-      boton.style.margin = '4px';
-      container.appendChild(boton);
-    });
-
-    function toggleRegion(region, boton) {
-      if (regionesSeleccionadas.includes(region)) {
-        // Deseleccionar
-        regionesSeleccionadas = regionesSeleccionadas.filter(r => r !== region);
-        boton.style.backgroundColor = '';
-      } else {
-        regionesSeleccionadas.push(region);
-        boton.style.backgroundColor = '#80c9ff'; // Azul claro
-      }
-    }
-
-    function procesarSelecciones() {
-      const categoria = document.getElementById('categoria').value;
-
-      if (!dataJson) {
-        alert("Los datos aún no se han cargado.");
-        return;
-      }
-
-      if (regionesSeleccionadas.length === 0) {
-        alert("Selecciona al menos una región.");
-        return;
-      }
-
-      const etiquetas = [];
-      const valores = [];
-
-      regionesSeleccionadas.forEach(regionSeleccionada => {
-        const regionData = dataJson.find(r => r.region === regionSeleccionada);
-        if (regionData && regionData[categoria]?.length > 0) {
-          const datos = regionData[categoria];
-          const ultimo = parseInt(datos[datos.length - 1].value);
-          etiquetas.push(regionSeleccionada);
-          valores.push(ultimo);
+    <div id="principal">
+      <h2>Selecciona regiones (haz clic en cada una):</h2>
+      <div id="botones-container"></div>
+  
+      <div id="categoria-container">
+        <h3>Selecciona una categoría de datos</h3>
+        <select id="categoria">
+          <option value="confirmed">Casos confirmados</option>
+          <option value="recover">Recuperados</option>
+          <option value="death">Muertes</option>
+          <option value="hospital">Hospitalizados</option>
+          <option value="hospitaluci">Hospitalizados UCI</option>
+          <option value="nohospital">No hospitalizados</option>
+        </select>
+      </div>  
+      <button id="botonParaGenerar" onclick="procesarSelecciones()">Generar gráfico</button>
+    </div>
+  
+    <canvas id="grafico" width="600" height="300"></canvas>
+  
+    <script>
+      let chartInstance;
+      let dataJson;
+      let regionesSeleccionadas = [];
+  
+      // Cargar datos
+      fetch("data.json")
+        .then(res => res.json())
+        .then(data => dataJson = data)
+        .catch(err => console.error("Error cargando JSON:", err));
+  
+      const regiones = [
+        'Amazonas', 'Ancash', 'Apurimac', 'Arequipa', 'Ayacucho',
+        'Cajamarca', 'Callao', 'Cusco', 'Huancavelica', 'Huanuco',
+        'Ica', 'Junin', 'La Libertad', 'Lambayeque', 'Lima',
+        'Loreto', 'Madre de Dios', 'Moquegua', 'Pasco', 'Piura',
+        'Puno', 'San Martin', 'Tacna', 'Tumbes', 'Ucayali'
+      ];
+  
+      // Crear botones de regiones
+      const container = document.getElementById('botones-container');
+      regiones.forEach(region => {
+        const boton = document.createElement('button');
+        boton.textContent = region;
+        boton.onclick = () => toggleRegion(region, boton);
+        boton.style.margin = '4px';
+        container.appendChild(boton);
+      });
+  
+      function toggleRegion(region, boton) {
+        if (regionesSeleccionadas.includes(region)) {
+          // Deseleccionar
+          regionesSeleccionadas = regionesSeleccionadas.filter(r => r !== region);
+          boton.style.backgroundColor = '';
         } else {
-          etiquetas.push(regionSeleccionada);
-          valores.push(0);
+          regionesSeleccionadas.push(region);
+          boton.style.backgroundColor = '#80c9ff'; // Azul claro
         }
-      });
-
-      if (chartInstance) {
-        chartInstance.destroy();
       }
-
-      const ctx = document.getElementById("grafico").getContext("2d");
-      chartInstance = new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: etiquetas,
-          datasets: [{
-            label: `Últimos valores de ${categoria}`,
-            data: valores,
-            backgroundColor: 'rgba(54, 162, 235, 0.6)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
-              title: {
-                display: true,
-                text: 'Casos'
-              }
-            }
-          }
-        }
-      });
-    }
-  </script>
-</body>
+  
+      
+    </script>
+  </body>
 </html>
