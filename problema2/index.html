@@ -62,12 +62,10 @@
       function procesarSelecciones() {
         //Verificaciones para ver si los datos estan cargados y asegura que al menos se halla seleccionado una opcion  
         const categoria = document.getElementById('categoria').value;
-
         if (!dataJson) {
           alert("Los datos aún no se han cargado.");
           return;
         }
-
         if (regionesSeleccionadas.length === 0) {
           alert("Selecciona al menos una región.");
           return;
@@ -93,10 +91,8 @@
           datos.forEach(item => {
             mapaValores[item.date] = parseInt(item.value);
           });
-
           // Generar la serie alineada con todas las fechas
           const serie = fechas.map(fecha => mapaValores[fecha] || 0);
-
           return {
             label: regionSeleccionada,
             data: serie,
@@ -111,7 +107,6 @@
         }
         //Crea un grafico de lineas, muestra una linea por region seleccionada y el eje X muestra las fechas, y el eje Y la cantidad de casos.
         const ctx = document.getElementById("grafico").getContext("2d");
-        
         chartInstance = new Chart(ctx, {
           type: "line",
           data: {
