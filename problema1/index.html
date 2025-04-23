@@ -108,14 +108,11 @@
           resultado += `Opción ${i}: ${regionSeleccionada} → Sin datos disponibles\n`;
         }
       }
-
-      alert(resultado);
-
+      //alert(resultado);
       // Destruir gráfico anterior si existe
       if (chartInstance) {
         chartInstance.destroy();
       }
-
       const ctx = document.getElementById("grafico").getContext("2d");
       chartInstance = new Chart(ctx, {
         type: "bar",
